@@ -102,58 +102,50 @@ void GLArea::paintGL()
 
     m_program->setUniformValue(m_matrixUniform, matrix);
 
-    float y = 0.9-m_anim;
     GLfloat ep_cyl = 0.25; GLfloat r_cyl = 1; GLint nb_fac = 20;
     GLfloat alpha = 2 * M_PI/nb_fac;
 
-    GLfloat vertices1[] = {
-            0    , 0 , ep_cyl/2,
-            r_cyl, 0 , ep_cyl/2,
-            r_cyl*cos(alpha), r_cyl*sin(alpha), ep_cyl/2,
-            0,					0,					-ep_cyl/2,
-            r_cyl,				0,					-ep_cyl/2,
-            r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2,
-            r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,
-
+    GLint color[]{
+           255, 0, 0,
     };
+
+    GLfloat face1[] = {
+        0,					0,					ep_cyl/2,           //face 1
+        r_cyl,				0,					ep_cyl/2,           //face 1
+        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //face 1
+        0,					0,					-ep_cyl/2,          //face 2
+        r_cyl,				0,					-ep_cyl/2,          //face 2
+        r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2,          //face 2
+        r_cyl,				0,					ep_cyl/2,           //facette1
+        r_cyl,				0,					-ep_cyl/2,          //facette1
+        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //facette1
+        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //facette2
+        r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2,          //facette2
+        r_cyl,				0,					-ep_cyl/2,          //facette2
+    };
+
     GLfloat colors1[] = {
-        1.0, 0.6, 0.6,
-        1.0, 0.6, 0.6,
-        1.0, 0.6, 0.6,
-        1.0, 0.6, 0.6,
-        1.0, 0.6, 0.6,
-        1.0, 0.6, 0.6,
-        1.0, 0.6, 0.6
-      };
-
-    GLfloat vertices[] = {
-       -0.7, -0.5, -0.1,
-        0.8, -0.2, -0.1,
-        0.1,    y,  0.3,
-       -0.6,  0.7, -0.2,
-        0.8,  0.8, -0.2,
-        0.1, -0.9,  0.7
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
     };
 
-    GLfloat colors[] = {
-        1.0, 0.6, 0.6,
-        1.0, 0.6, 0.6,
-        1.0, 0.6, 0.6,
-        1.0, 0.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 0.0, 1.0
-    };
-
-    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, vertices1);
+    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, face1);
     glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, colors1);
 
     glEnableVertexAttribArray(m_posAttr);  // rend le VAA accessible pour glDrawArrays
     glEnableVertexAttribArray(m_colAttr);
 
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    glDisableVertexAttribArray(m_posAttr);
-    glDisableVertexAttribArray(m_colAttr);
+    glDrawArrays(GL_TRIANGLES, 0, 12);
 
     m_program->release();
 }

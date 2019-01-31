@@ -40,49 +40,37 @@ void Cylindre::dessiner_cylindre(GLint colorCylindre[3]){
 }
 
 void Cylindre::dessiner_rayon(){
-    GLdouble alpha = 2 * M_PI/nb_fac;
-    switch(flag_fill){
-        case false : glBegin(GL_LINE_LOOP);break;
-        default : glBegin(GL_POLYGON);
-    }
-    glColor3f (color[0]/255.,	color[1]/255.,	color[2]/255.);
-    glVertex3f (0,					0,					ep_cyl/2);
-    glVertex3f (r_cyl,				0,					ep_cyl/2);
-    glVertex3f (r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2);
-    glEnd();
+    GLfloat alpha = 2 * M_PI/nb_fac;
 
-    switch(flag_fill){
-        case false : glBegin(GL_LINE_LOOP);break;
-        default : glBegin(GL_POLYGON);
-    }
+    GLfloat face1[] = {
+        0,					0,					ep_cyl/2,           //face 1
+        r_cyl,				0,					ep_cyl/2,           //face 1
+        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //face 1
+        0,					0,					-ep_cyl/2,          //face 2
+        r_cyl,				0,					-ep_cyl/2,          //face 2
+        r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2,          //face 2
+        r_cyl,				0,					ep_cyl/2,           //facette1
+        r_cyl,				0,					-ep_cyl/2,          //facette1
+        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //facette1
+        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //facette2
+        r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2,          //facette2
+        r_cyl,				0,					-ep_cyl/2,          //facette2
+    };
 
-    glColor3f (color[0]/255., color[1]/255.,color[2]/255.);
-    glVertex3f (0,					0,					-ep_cyl/2);
-    glVertex3f (r_cyl,				0,					-ep_cyl/2);
-    glVertex3f (r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2);
-    glEnd();
-    double mod;
-    switch(flag_fill){
-        case false :
-            glBegin(GL_LINE_LOOP);
-            mod=0.6;
-        break;
-        default : glBegin(GL_QUADS);
-            mod=0.8;
-    }
+    GLfloat colors1[] = {
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
+        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
+        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
+    };
 
-    glColor3f ((color[0]/255.)*mod,	(color[1]/255.)*mod,	(color[2]/255.)*mod);
-    glVertex3f (r_cyl,				0,					ep_cyl/2);
-    glVertex3f (r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2);
-    glVertex3f (r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2);
-    glVertex3f (r_cyl,				0,					-ep_cyl/2);
-    glEnd();
-
-    if(!flag_fill){
-        glBegin(GL_LINE_LOOP);
-        glVertex3f (0,					0,					ep_cyl/2);
-        glVertex3f (0,					0,					-ep_cyl/2);
-        glEnd();
-    }
 
 }

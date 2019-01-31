@@ -6,8 +6,8 @@
 class Cylindre
 {
 public:
-    GLdouble ep_cyl; // epaisseur AB
-    GLdouble r_cyl; //rayon AC
+    GLfloat ep_cyl; // epaisseur AB
+    GLfloat r_cyl; //rayon AC
     GLint nb_fac; // nombre de facettes
     GLint color[3]; // RVB
     boolean flag_fill;
