@@ -8,7 +8,8 @@ QT       += core gui
 
 CONFIG += c++14
 
-LIBS += -lGLU
+LIBS += -lGLU32\
+        -lOpengl32
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,10 +19,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         princ.cpp \
-        glarea.cpp
+        glarea.cpp \
+        cylindre.cpp
 
 HEADERS  += princ.h \
-        glarea.h
+        glarea.h \
+         cylindre.h
 
 FORMS    += princ.ui
 

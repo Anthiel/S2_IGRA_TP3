@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QSurfaceFormat>
 #include <QMatrix4x4>
+#include <math.h>
 
 static const QString vertexShaderFile   = ":/basic.vsh";
 static const QString fragmentShaderFile = ":/basic.fsh";
@@ -102,6 +103,29 @@ void GLArea::paintGL()
     m_program->setUniformValue(m_matrixUniform, matrix);
 
     float y = 0.9-m_anim;
+    GLfloat ep_cyl = 0.25; GLfloat r_cyl = 1; GLint nb_fac = 20;
+    GLfloat alpha = 2 * M_PI/nb_fac;
+
+    GLfloat vertices1[] = {
+            0    , 0 , ep_cyl/2,
+            r_cyl, 0 , ep_cyl/2,
+            r_cyl*cos(alpha), r_cyl*sin(alpha), ep_cyl/2,
+            0,					0,					-ep_cyl/2,
+            r_cyl,				0,					-ep_cyl/2,
+            r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2,
+            r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,
+
+    };
+    GLfloat colors1[] = {
+        1.0, 0.6, 0.6,
+        1.0, 0.6, 0.6,
+        1.0, 0.6, 0.6,
+        1.0, 0.6, 0.6,
+        1.0, 0.6, 0.6,
+        1.0, 0.6, 0.6,
+        1.0, 0.6, 0.6
+      };
+
     GLfloat vertices[] = {
        -0.7, -0.5, -0.1,
         0.8, -0.2, -0.1,
@@ -120,8 +144,8 @@ void GLArea::paintGL()
         0.0, 0.0, 1.0
     };
 
-    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, vertices);
-    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, colors);
+    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, vertices1);
+    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, colors1);
 
     glEnableVertexAttribArray(m_posAttr);  // rend le VAA accessible pour glDrawArrays
     glEnableVertexAttribArray(m_colAttr);
