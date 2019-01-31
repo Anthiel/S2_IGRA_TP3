@@ -8,6 +8,7 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
+#include <QVector>
 
 class GLArea : public QOpenGLWidget,
                protected QOpenGLFunctions

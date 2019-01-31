@@ -1,6 +1,7 @@
 #ifndef CYLINDRE_H
 #define CYLINDRE_H
 
+#include <QVector>
 #include <GL/glu.h>
 
 class Cylindre

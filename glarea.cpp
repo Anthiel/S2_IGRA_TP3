@@ -110,6 +110,8 @@ void GLArea::paintGL()
     GLint color[]{
            255, 0, 0,
     };
+    QVector<GLfloat> vertices;
+    QVector<GLfloat> colors;
 
     GLfloat face1[36] = {
         0,					0,					ep_cyl/2,           //face 1
