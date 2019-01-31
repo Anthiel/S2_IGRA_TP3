@@ -45,6 +45,10 @@ private:
     double m_anim = 0;
     double m_radius = 0.5;
     double m_ratio = 1;
+    float  m_x = 0;
+    float  m_y = 0;
+    float  m_z = 0;
+
 
     // Pour utiliser les shaders
     QOpenGLShaderProgram *m_program;

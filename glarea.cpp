@@ -100,6 +100,8 @@ void GLArea::paintGL()
     // Rotation de la scène pour l'animation
     matrix.rotate(m_angle, 0, 1, 0);
 
+    matrix.translate(-m_x, -m_y, -m_z);
+
     m_program->setUniformValue(m_matrixUniform, matrix);
 
     GLfloat ep_cyl = 0.25; GLfloat r_cyl = 1; GLint nb_fac = 20;
@@ -109,7 +111,7 @@ void GLArea::paintGL()
            255, 0, 0,
     };
 
-    GLfloat face1[] = {
+    GLfloat face1[36] = {
         0,					0,					ep_cyl/2,           //face 1
         r_cyl,				0,					ep_cyl/2,           //face 1
         r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //face 1
@@ -124,7 +126,7 @@ void GLArea::paintGL()
         r_cyl,				0,					-ep_cyl/2,          //facette2
     };
 
-    GLfloat colors1[] = {
+    GLfloat colors1[36] = {
         color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
         color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
         color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
@@ -155,9 +157,22 @@ void GLArea::keyPressEvent(QKeyEvent *ev)
     qDebug() << __FUNCTION__ << ev->text();
 
     switch(ev->key()) {
-        case Qt::Key_Space :
+        case Qt::Key_4 :
             m_angle += 1;
             if (m_angle >= 360) m_angle -= 360;
+            update();
+            break;
+        case Qt::Key_6 :
+            m_angle -= 1;
+            if (m_angle <= -1) m_angle += 360;
+            update();
+            break;
+        case Qt::Key_8 :
+            m_y += 0.1f;
+            update();
+            break;
+        case Qt::Key_2 :
+            m_y -= 0.1f;
             update();
             break;
         case Qt::Key_A :
@@ -167,8 +182,24 @@ void GLArea::keyPressEvent(QKeyEvent *ev)
             break;
         case Qt::Key_R :
             if (ev->text() == "r")
-                 setRadius(m_radius-0.05);
-            else setRadius(m_radius+0.05);
+                 setRadius(m_radius-0.05f);
+            else setRadius(m_radius+0.05f);
+            break;
+        case Qt::Key_Z :
+            m_z+=0.1f;
+            update();
+            break;
+        case Qt::Key_Q :
+            m_x-=0.1f;
+            update();
+            break;
+        case Qt::Key_S :
+            m_z-=0.1f;
+            update();
+            break;
+        case Qt::Key_D :
+            m_x+=0.1f;
+            update();
             break;
     }
 }
