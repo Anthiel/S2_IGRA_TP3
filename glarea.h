@@ -9,6 +9,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QVector>
+#include "cylindre.h"
 
 class GLArea : public QOpenGLWidget,
                protected QOpenGLFunctions
@@ -56,6 +57,8 @@ private:
     int m_posAttr;
     int m_colAttr;
     int m_matrixUniform;
+
+    Cylindre *c1 =new Cylindre(0.25, 1, 20, 255,0,0);
 };
 
 #endif // GLAREA_H

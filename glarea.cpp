@@ -110,46 +110,18 @@ void GLArea::paintGL()
     GLint color[]{
            255, 0, 0,
     };
-    QVector<GLfloat> vertices;
-    QVector<GLfloat> colors;
+    GLfloat vertices[c1->nb_fac*36];    //36=3*3*4
+    GLfloat colors[c1->nb_fac*36];      //36=3*3*4
 
-    GLfloat face1[36] = {
-        0,					0,					ep_cyl/2,           //face 1
-        r_cyl,				0,					ep_cyl/2,           //face 1
-        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //face 1
-        0,					0,					-ep_cyl/2,          //face 2
-        r_cyl,				0,					-ep_cyl/2,          //face 2
-        r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2,          //face 2
-        r_cyl,				0,					ep_cyl/2,           //facette1
-        r_cyl,				0,					-ep_cyl/2,          //facette1
-        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //facette1
-        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //facette2
-        r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2,          //facette2
-        r_cyl,				0,					-ep_cyl/2,          //facette2
-    };
+    c1->construire_cylindre(vertices,colors);
 
-    GLfloat colors1[36] = {
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
-    };
-
-    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, face1);
-    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, colors1);
+    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, colors);
 
     glEnableVertexAttribArray(m_posAttr);  // rend le VAA accessible pour glDrawArrays
     glEnableVertexAttribArray(m_colAttr);
 
-    glDrawArrays(GL_TRIANGLES, 0, 12);
+    glDrawArrays(GL_TRIANGLES, 0, 12*c1->nb_fac);
 
     m_program->release();
 }

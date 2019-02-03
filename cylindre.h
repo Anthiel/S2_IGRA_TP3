@@ -14,10 +14,9 @@ public:
     boolean flag_fill;
 
 public:
-    Cylindre(GLdouble ep_cyl, GLdouble r_cyl, GLint nb_fac);
+    Cylindre(GLdouble ep_cyl, GLdouble r_cyl, GLint nb_fac,int r=255, int v=255, int b=255);
     void setColor(int r, int v, int b);
-    void dessiner_cylindre(GLint colorCylindre[3]);
-    void dessiner_rayon();
+    void construire_cylindre(GLfloat *vertices, GLfloat *colors);
 };
 
 #endif // CYLINDRE_H
