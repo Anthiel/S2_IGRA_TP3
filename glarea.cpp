@@ -80,10 +80,18 @@ void GLArea::resizeGL(int w, int h)
     m_ratio = (double) w / h;
     // doProjection();
 }
-/*
-void GLArea::drawCylindre(Cylindre c){
 
-}*/
+void GLArea::drawCylindre(Cylindre *c, QMatrix4x4 matrix){
+    m_program->bind(); // active le shader program
+    m_program->setUniformValue(m_matrixUniform, matrix);
+    c->construire_cylindre();
+    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, c->vertices);
+    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, c->colors);
+    glEnableVertexAttribArray(m_posAttr);  // rend le VAA accessible pour glDrawArrays
+    glEnableVertexAttribArray(m_colAttr);
+    glDrawArrays(GL_TRIANGLES, 0, 12*c->nb_fac);
+    m_program->release();
+}
 
 void GLArea::paintGL()
 {
@@ -95,53 +103,76 @@ void GLArea::paintGL()
 
     QMatrix4x4 matrix;
     GLfloat hr = m_radius, wr = hr * m_ratio;            // = glFrustum
-    matrix.frustum(-wr, wr, -hr, hr, 1.0, 5.0);
+    matrix.frustum(-wr, wr, -hr, hr, 1.0, 10.0);
     //matrix.perspective(60.0f, m_ratio, 0.1f, 100.0f);  // = gluPerspective
-
     // Remplace gluLookAt (0, 0, 3.0, 0, 0, 0, 0, 1, 0);
     matrix.translate(0, 0, -3.0);
-
     // Rotation de la scène pour l'animation
     matrix.rotate(m_angle, 0, 1, 0);
     matrix.translate(-m_x, -m_y, -m_z);
-    matrix.rotate(m_anim, 0, 0, 1);
 
-    m_program->setUniformValue(m_matrixUniform, matrix);
+    double GH=0.8;
+    double HJ=2;
+    double HI=GH*sin(-m_anim*M_PI/(180));;
+    double xJ=-((-1*GH*cos(-m_anim*M_PI/(180))) + sqrt(pow(HJ,2)-pow(HI,2)));;
+    double JI=(xJ-GH*cos(-m_anim*M_PI/(180)));
+    double beta=atan(HI/JI)*180/M_PI;
 
-    c1->construire_cylindre();
-    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, c1->vertices);
-    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, c1->colors);
-    glEnableVertexAttribArray(m_posAttr);  // rend le VAA accessible pour glDrawArrays
-    glEnableVertexAttribArray(m_colAttr);
-    glDrawArrays(GL_TRIANGLES, 0, 12*c1->nb_fac);
-    m_program->release();
+    QMatrix4x4 minit=matrix;
 
-    m_program->bind(); // active le shader program
+    // cylindre principal et axe
+    matrix.rotate(-m_anim, 0, 0, 1);
+        drawCylindre(c1,matrix);
 
-    matrix.translate(0, 0, -0.3);
+        matrix.translate(0, 0, -0.5);
+            drawCylindre(c2,matrix);
+    matrix=minit;
 
-    m_program->setUniformValue(m_matrixUniform, matrix);
-    c2->construire_cylindre();
-    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, c2->vertices);
-    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, c2->colors);
-    glEnableVertexAttribArray(m_posAttr);  // rend le VAA accessible pour glDrawArrays
-    glEnableVertexAttribArray(m_colAttr);
-    glDrawArrays(GL_TRIANGLES, 0, 12*c2->nb_fac);
-    m_program->release();
+    // cylindre rotatif et axe
+    matrix.translate(GH*cos(-m_anim*M_PI/(180)), GH*sin(-m_anim*M_PI/(180)), 0.3);
+        QMatrix4x4 mcylindrerotatif=matrix;
+        matrix.translate(0, 0, -0.05);
+        matrix.rotate(-m_anim, 0, 0, 1);
+            drawCylindre(c3,matrix);
+        matrix=mcylindrerotatif;
+        matrix.rotate(-beta, 0, 0, 1);
+        matrix.translate(0, 0, 0.2);
+            drawCylindre(c4,matrix);
+    matrix=minit;
 
-    m_program->bind(); // active le shader program
+    //cylindres exterieur + piece HJ
+    matrix.translate(xJ,0,0.5);
+        QMatrix4x4 mcylindreexterieur=matrix;
+            matrix.rotate(-beta, 0, 0, 1);
+            drawCylindre(c5,matrix);
+        matrix=mcylindreexterieur;
+            matrix.translate(0,0,0.4);
+            drawCylindre(c6,matrix);
+        matrix=mcylindreexterieur;
+            matrix.translate(0,0,0.16);
+            drawCylindre(c7,matrix);
+    matrix=minit;
 
-    matrix.rotate(m_anim, 0, 0, -1);
-    matrix.translate(0.8*cos(m_anim *(M_PI/180)), 0.8*sin(m_anim *(M_PI/180)), 0.6);
-    matrix.rotate(m_anim, 0, 0, 1);
-    m_program->setUniformValue(m_matrixUniform, matrix);
-    c3->construire_cylindre();
-    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, c3->vertices);
-    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, c3->colors);
-    glEnableVertexAttribArray(m_posAttr);  // rend le VAA accessible pour glDrawArrays
-    glEnableVertexAttribArray(m_colAttr);
-    glDrawArrays(GL_TRIANGLES, 0, 12*c3->nb_fac);
-    m_program->release();
+    //piece HJ
+    matrix.translate((xJ+GH*cos(-m_anim*M_PI/(180)))/2,(GH*sin(-m_anim*M_PI/(180)))/2,0.5); // xJ+GH*cos(-m_alpha*M_PI/(180)))/2 signe inverser pour GH*cos(-m_alpha*M_PI/(180)))/2 mais ça marche de cette manière seulement
+    matrix.rotate(-beta , 0, 0, 1);
+    matrix.rotate(90, 0, 1, 0);
+    matrix.rotate(45, 0, 0, 1);
+        drawCylindre(c8, matrix);
+    matrix=minit;
+
+    //le piston et sa base
+    matrix.translate(xJ-1,0,0.9);
+    matrix.rotate(90, 0, 1, 0);
+    matrix.rotate(45, 0, 0, 1);
+        drawCylindre(c9,matrix);
+    matrix=minit;
+    matrix.translate(-4.1,0,0.9);
+    matrix.rotate(90, 0, 1, 0);
+    matrix.rotate(45, 0, 0, 1);
+        drawCylindre(c10,matrix);
+    matrix=minit;
+
 }
 
 void GLArea::keyPressEvent(QKeyEvent *ev)

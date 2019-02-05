@@ -39,18 +39,20 @@ void Cylindre::construire_cylindre(){
                 vertices[i*36+d]=r_cyl*cos((i+1)*alpha);d++;   vertices[i*36+d]=r_cyl*sin((i+1)*alpha);d++;   vertices[i*36+d]=((-0.5f+(j%2))*2)*ep_cyl/2;d++;
             }
         }
-
-        for (int j=0;j < 6;++j) {    //color faces
             for (int k=0;k < 3;++k) {
-                colors[i*36+j*3+k]=color[k]/255.0f;dc++;
+                colors[i*36+k]=color[k]/255.0f;dc++;
+            }
+        for (int j=1;j < 6;++j) {    //color faces
+            for (int k=0;k < 3;++k) {
+                colors[i*36+j*3+k]=(color[k]/255.0f)*0.8f;dc++;
             }
         }for (int j=0;j < 6;++j) {    //color facettes
             for (int k=0;k < 3;++k) {
-                colors[i*36+j*3+k+18]=(color[k]/255.0f)*0.8f;dc++;
+                colors[i*36+j*3+k+18]=(color[k]/255.0f)*0.6f;dc++;
             }
         }for (int j=0;j < 3;++j) {    //color facettes
             for (int k=0;k < 3;++k) {
-                colors[i*36+j*3+k+27]=(color[k]/255.0f)*0.75f;dc++;
+                colors[i*36+j*3+k+27]=(color[k]/255.0f)*0.65f;dc++;
             }
         }
     }
