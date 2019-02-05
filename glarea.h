@@ -59,6 +59,8 @@ private:
     int m_matrixUniform;
 
     Cylindre *c1 =new Cylindre(0.25, 1, 20, 255,0,0);
+    Cylindre *c2 =new Cylindre(1, 0.1, 8, 255,255,255);
+    Cylindre *c3 =new Cylindre(0.3, 0.4, 8, 0,255,255);
 };
 
 #endif // GLAREA_H

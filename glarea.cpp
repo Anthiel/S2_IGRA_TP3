@@ -80,6 +80,10 @@ void GLArea::resizeGL(int w, int h)
     m_ratio = (double) w / h;
     // doProjection();
 }
+/*
+void GLArea::drawCylindre(Cylindre c){
+
+}*/
 
 void GLArea::paintGL()
 {
@@ -99,30 +103,44 @@ void GLArea::paintGL()
 
     // Rotation de la scène pour l'animation
     matrix.rotate(m_angle, 0, 1, 0);
-
     matrix.translate(-m_x, -m_y, -m_z);
+    matrix.rotate(m_anim, 0, 0, 1);
 
     m_program->setUniformValue(m_matrixUniform, matrix);
 
-    GLfloat ep_cyl = 0.25; GLfloat r_cyl = 1; GLint nb_fac = 20;
-    GLfloat alpha = 2 * M_PI/nb_fac;
-
-    GLint color[]{
-           255, 0, 0,
-    };
-    GLfloat vertices[c1->nb_fac*36];    //36=3*3*4
-    GLfloat colors[c1->nb_fac*36];      //36=3*3*4
-
-    c1->construire_cylindre(vertices,colors);
-
-    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, vertices);
-    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, colors);
-
+    c1->construire_cylindre();
+    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, c1->vertices);
+    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, c1->colors);
     glEnableVertexAttribArray(m_posAttr);  // rend le VAA accessible pour glDrawArrays
     glEnableVertexAttribArray(m_colAttr);
-
     glDrawArrays(GL_TRIANGLES, 0, 12*c1->nb_fac);
+    m_program->release();
 
+    m_program->bind(); // active le shader program
+
+    matrix.translate(0, 0, -0.3);
+
+    m_program->setUniformValue(m_matrixUniform, matrix);
+    c2->construire_cylindre();
+    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, c2->vertices);
+    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, c2->colors);
+    glEnableVertexAttribArray(m_posAttr);  // rend le VAA accessible pour glDrawArrays
+    glEnableVertexAttribArray(m_colAttr);
+    glDrawArrays(GL_TRIANGLES, 0, 12*c2->nb_fac);
+    m_program->release();
+
+    m_program->bind(); // active le shader program
+
+    matrix.rotate(m_anim, 0, 0, -1);
+    matrix.translate(0.8*cos(m_anim *(M_PI/180)), 0.8*sin(m_anim *(M_PI/180)), 0.6);
+    matrix.rotate(m_anim, 0, 0, 1);
+    m_program->setUniformValue(m_matrixUniform, matrix);
+    c3->construire_cylindre();
+    glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, c3->vertices);
+    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, c3->colors);
+    glEnableVertexAttribArray(m_posAttr);  // rend le VAA accessible pour glDrawArrays
+    glEnableVertexAttribArray(m_colAttr);
+    glDrawArrays(GL_TRIANGLES, 0, 12*c3->nb_fac);
     m_program->release();
 }
 
@@ -201,8 +219,8 @@ void GLArea::mouseMoveEvent(QMouseEvent *ev)
 void GLArea::onTimeout()
 {
     qDebug() << __FUNCTION__ ;
-    m_anim += 0.01;
-    if (m_anim > 1) m_anim = 0;
+    m_anim += 2;
+    if (m_anim > 359) m_anim = 0;
     update();
 }
 
