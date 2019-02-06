@@ -26,73 +26,37 @@ void Cylindre::construire_cylindre(){
         int d=0;
         int dc=0;
         for (int j=1;j>=-1;j=j-2) {  //pos face avant j=1 face arrière j=-1
-            vertices[i*36+d]=0;d++;                         vertices[i*36+d]=0;d++;                         vertices[i*36+d]=j*ep_cyl/2;d++;
-            vertices[i*36+d]=r_cyl*cos(i*alpha);d++;        vertices[i*36+d]=r_cyl*sin(i*alpha);d++;        vertices[i*36+d]=j*ep_cyl/2;d++;
+            vertices[i*36+d]=0;                     d++;    vertices[i*36+d]=0;                     d++;    vertices[i*36+d]=j*ep_cyl/2;d++;
+            vertices[i*36+d]=r_cyl*cos(i*alpha);    d++;    vertices[i*36+d]=r_cyl*sin(i*alpha);    d++;    vertices[i*36+d]=j*ep_cyl/2;d++;
             vertices[i*36+d]=r_cyl*cos((i+1)*alpha);d++;    vertices[i*36+d]=r_cyl*sin((i+1)*alpha);d++;    vertices[i*36+d]=j*ep_cyl/2;d++;
         }
 
         for (int j=0;j < 6;++j) {   //pos facettes
             if(j==0 || j==1 || j==5){
-                vertices[i*36+d]=r_cyl*cos(i*alpha);d++;    vertices[i*36+d]=r_cyl*sin(i*alpha);d++;       vertices[i*36+d]=((-0.5f+(j%2))*2)*ep_cyl/2;d++;
+                vertices[i*36+d]=r_cyl*cos(i*alpha);    d++;    vertices[i*36+d]=r_cyl*sin(i*alpha);    d++;   vertices[i*36+d]=((-0.5f+(j%2))*2)*ep_cyl/2;d++;
             }
             else{
-                vertices[i*36+d]=r_cyl*cos((i+1)*alpha);d++;   vertices[i*36+d]=r_cyl*sin((i+1)*alpha);d++;   vertices[i*36+d]=((-0.5f+(j%2))*2)*ep_cyl/2;d++;
+                vertices[i*36+d]=r_cyl*cos((i+1)*alpha);d++;    vertices[i*36+d]=r_cyl*sin((i+1)*alpha);d++;   vertices[i*36+d]=((-0.5f+(j%2))*2)*ep_cyl/2;d++;
             }
         }
-            for (int k=0;k < 3;++k) {
+            for (int k=0;k < 3;++k) {   //color centre cylindre
                 colors[i*36+k]=color[k]/255.0f;dc++;
             }
-        for (int j=1;j < 6;++j) {    //color faces
+        for (int j=1;j < 6;++j) {    //color faces 1-2
             for (int k=0;k < 3;++k) {
                 colors[i*36+j*3+k]=(color[k]/255.0f)*0.8f;dc++;
             }
-        }for (int j=0;j < 6;++j) {    //color facettes
+        }for (int j=0;j < 6;++j) {    //color facettes 1-2
             for (int k=0;k < 3;++k) {
                 colors[i*36+j*3+k+18]=(color[k]/255.0f)*0.6f;dc++;
             }
-        }for (int j=0;j < 3;++j) {    //color facettes
+        }for (int j=0;j < 3;++j) {    //color facette2
             for (int k=0;k < 3;++k) {
                 colors[i*36+j*3+k+27]=(color[k]/255.0f)*0.65f;dc++;
             }
         }
     }
 }
-
-/*
-void Cylindre::dessiner_rayon(){
-    GLfloat alpha = 2 * M_PI/nb_fac;
-
-    GLfloat face1[] = {
-        0,					0,					ep_cyl/2,           //face 1
-        r_cyl,				0,					ep_cyl/2,           //face 1
-        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //face 1
-        0,					0,					-ep_cyl/2,          //face 2
-        r_cyl,				0,					-ep_cyl/2,          //face 2
-        r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2,          //face 2
-        r_cyl,				0,					ep_cyl/2,           //facette1
-        r_cyl,				0,					-ep_cyl/2,          //facette1
-        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //facette1
-        r_cyl*cos(alpha),	r_cyl*sin(alpha),	ep_cyl/2,           //facette2
-        r_cyl*cos(alpha),	r_cyl*sin(alpha),	-ep_cyl/2,          //facette2
-        r_cyl,				0,					-ep_cyl/2,          //facette2
-    };
-
-    GLfloat colors1[] = {
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 1
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
-        color[0]/255.0f,            color[1]/255.0f,            color[2]/255.0f,            //face 2
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette1
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
-        (color[0]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     (color[1]/255.0f)*0.8f,     //facette2
-    };
-}
-*/
 
 //je n'arrive pas a faire l'affichage avec les QVector mais les calculs sont là
 void Cylindre::construire_cylindre(QVector<GLfloat> vertices, QVector<GLfloat> colors){
