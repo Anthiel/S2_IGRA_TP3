@@ -5,6 +5,7 @@
 
 #include "ui_princ.h"
 
+
 class Princ : public QMainWindow, private Ui::Princ
 {
     Q_OBJECT
@@ -17,6 +18,11 @@ public slots:
 
 protected slots:
     void onSliderRadius(int value);
+    void onSliderNear(int value);
+
+private slots:
+    void on_pushButton_clicked();
+    void on_sli_radius_valueChanged(int value);
 };
 
 #endif // PRINC_H

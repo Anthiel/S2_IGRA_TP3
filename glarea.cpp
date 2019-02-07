@@ -31,6 +31,7 @@ GLArea::GLArea(QWidget *parent) :
     m_timer->setInterval(50);  // msec
     connect (m_timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
     connect (this, SIGNAL(radiusChanged(double)), this, SLOT(setRadius(double)));
+    connect (this, SIGNAL(onSliderNear(int value)), this, SLOT(setNear(int value)));
 }
 
 GLArea::~GLArea()
@@ -103,7 +104,7 @@ void GLArea::paintGL()
 
     QMatrix4x4 matrix;
     GLfloat hr = m_radius, wr = hr * m_ratio;            // = glFrustum
-    matrix.frustum(-wr, wr, -hr, hr, 1.0, 10.0);
+    matrix.frustum(-wr, wr, -hr, hr, nearValue, farvalue);
     //matrix.perspective(60.0f, m_ratio, 0.1f, 100.0f);  // = gluPerspective
     // Remplace gluLookAt (0, 0, 3.0, 0, 0, 0, 0, 1, 0);
     matrix.translate(0, 0, -3.0);
@@ -253,6 +254,11 @@ void GLArea::onTimeout()
     m_anim += 2;
     if (m_anim > 359) m_anim = 0;
     update();
+}
+
+void GLArea::setNear(int value){
+    nearValue = value;
+    qDebug() << "setNear = " << nearValue;
 }
 
 void GLArea::setRadius(double radius)

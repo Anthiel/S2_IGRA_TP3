@@ -1,6 +1,7 @@
 // CC-BY Edouard.Thiel@univ-amu.fr - 22/01/2019
 
 #include "princ.h"
+#include "dialog.h"
 #include <QDebug>
 
 Princ::Princ(QWidget *parent) :
@@ -28,4 +29,20 @@ void Princ::onSliderRadius(int value)
     qDebug() << __FUNCTION__ << value << sender();
     qDebug() << "  emit radiusChanged()";
     emit glarea->radiusChanged(value/20.0);
+}
+
+void Princ::onSliderNear(int value)
+{
+    qDebug() << __FUNCTION__ << value << sender();
+    qDebug() << "  emit PRINC SliderNear()";
+    emit onSliderNear(value);
+}
+
+
+void Princ::on_pushButton_clicked()
+{
+    Dialog dia;
+    if(dia.exec()){
+        connect(&dia, SIGNAL(onSliderNear(int)),this, SLOT(onSliderNear(int)));
+    }
 }

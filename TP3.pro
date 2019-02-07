@@ -20,13 +20,16 @@ TEMPLATE = app
 SOURCES += main.cpp\
         princ.cpp \
         glarea.cpp \
-        cylindre.cpp
+        cylindre.cpp \
+    dialog.cpp
 
 HEADERS  += princ.h \
         glarea.h \
-         cylindre.h
+         cylindre.h \
+    dialog.h
 
-FORMS    += princ.ui
+FORMS    += princ.ui \
+    dialog.ui
 
 RESOURCES += \
     TP3.qrc

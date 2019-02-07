@@ -22,6 +22,7 @@ public:
 
 public slots:
     void setRadius(double radius);
+    void setNear(int value);
 
 signals:  // On ne les implémente pas, elles seront générées par MOC ;
           // les paramètres seront passés aux slots connectés.
@@ -42,6 +43,12 @@ protected:
     void mouseMoveEvent(QMouseEvent *ev) override;
     void drawCylindre(Cylindre *c, QMatrix4x4 matrix);
 
+public:
+    float nearValue = 1;
+    float farvalue  = 10;
+
+
+
 private:
     double m_angle = 0;
     QTimer *m_timer = nullptr;
@@ -51,6 +58,7 @@ private:
     float  m_x = 0;
     float  m_y = 0;
     float  m_z = 0;
+
 
 
     // Pour utiliser les shaders
