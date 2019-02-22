@@ -19,10 +19,12 @@ public slots:
 protected slots:
     void onSliderRadius(int value);
     void onSliderNear(int value);
+    void onSliderFar(int value);
+    void onSliderZ(int value);
+    void onSliderAngle(int value);
 
 private slots:
     void on_pushButton_clicked();
-    void on_sli_radius_valueChanged(int value);
 };
 
 #endif // PRINC_H

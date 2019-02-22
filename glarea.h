@@ -19,10 +19,19 @@ class GLArea : public QOpenGLWidget,
 public:
     explicit GLArea(QWidget *parent = 0);
     ~GLArea();
+    float getRadius();
+    float getNear();
+    float getFar();
+    float get_mz();
+    float get_mAngle();
+
 
 public slots:
     void setRadius(double radius);
     void setNear(int value);
+    void setFar(int value);
+    void set_mz(float value);
+    void set_mAngle(float value);
 
 signals:  // On ne les implémente pas, elles seront générées par MOC ;
           // les paramètres seront passés aux slots connectés.

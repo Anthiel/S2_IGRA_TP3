@@ -256,21 +256,68 @@ void GLArea::onTimeout()
     update();
 }
 
-void GLArea::setNear(int value){
-    nearValue = value;
-    qDebug() << "setNear = " << nearValue;
-}
-
 void GLArea::setRadius(double radius)
 {
     qDebug() << __FUNCTION__ << radius << sender();
     if (radius != m_radius && radius > 0.01 && radius <= 10) {
         m_radius = radius;
-        qDebug() << "  emit radiusChanged()";
-        emit radiusChanged(radius);
         update();
     }
 }
+
+void GLArea::setNear(int value){
+    nearValue = value;
+    qDebug() << "setNear = " << nearValue;
+    update();
+
+}
+void GLArea::setFar(int value){
+    farvalue = value;
+    qDebug() << "setFar = " << farvalue;
+    update();
+
+}
+
+void GLArea::set_mz(float value){
+    m_z = value;
+    qDebug() << "m_z = " << m_z;
+    update();
+}
+
+void GLArea::set_mAngle(float value){
+    m_angle = value;
+    qDebug() << "m_z = " << m_z;
+    update();
+}
+
+float GLArea::getRadius(){
+    qDebug() << "m_radius = " << m_radius;
+    return m_radius;
+}
+
+
+float GLArea::getNear(){
+   qDebug() << "nearValue = " << nearValue;
+   return nearValue;
+}
+
+float GLArea::getFar(){
+    qDebug() << "farvalue = " << farvalue;
+    return farvalue;
+}
+
+float GLArea::get_mz(){
+    qDebug() << "m_z = " << m_z;
+    return m_z;
+}
+
+float GLArea::get_mAngle(){
+    qDebug() << "m_angle = " << m_angle;
+    return m_angle;
+}
+
+
+
 
 
 
