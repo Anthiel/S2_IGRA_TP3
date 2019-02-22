@@ -199,7 +199,7 @@ void GLArea::keyPressEvent(QKeyEvent *ev)
             m_y -= 0.1f;
             update();
             break;
-        case Qt::Key_A :
+        case Qt::Key_G:
             if (m_timer->isActive())
                 m_timer->stop();
             else m_timer->start();
@@ -210,9 +210,51 @@ void GLArea::keyPressEvent(QKeyEvent *ev)
             else setRadius(m_radius+0.05f);
             break;
         case Qt::Key_Z :
-            m_z+=0.1f;
-            update();
+            if (ev->text() == "z"){
+                m_z+=0.1f;
+                update();
+            }
+            else{
+                m_z-=0.1f;
+                update();
+            }
             break;
+
+        case Qt::Key_N :
+            if (ev->text() == "n"){
+                nearValue+=0.1f;
+                update();
+            }
+            else{
+                nearValue-=0.1f;
+                update();
+            }
+            break;
+
+        case Qt::Key_F :
+            if (ev->text() == "f"){
+                farvalue+=0.1f;
+                update();
+            }
+            else{
+                farvalue-=0.1f;
+                update();
+            }
+            break;
+
+        case Qt::Key_A :
+            if (ev->text() == "a"){
+                m_angle += 1;
+                if (m_angle >= 360) m_angle -= 360;
+                update();
+            }
+            else{
+                m_angle -= 1;
+                if (m_angle <= -1) m_angle += 360;
+                update();
+            }
+            break;
+
         case Qt::Key_Q :
             m_x-=0.1f;
             update();
@@ -226,6 +268,7 @@ void GLArea::keyPressEvent(QKeyEvent *ev)
             update();
             break;
     }
+    qDebug() << "PRINC NEAR : " << getNear();
 }
 
 void GLArea::keyReleaseEvent(QKeyEvent *ev)

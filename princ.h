@@ -15,6 +15,9 @@ public:
 
 public slots:
     void setSliderRadius(double radius);
+    void Startmotor();
+    void Stopmotor();
+
 
 protected slots:
     void onSliderRadius(int value);

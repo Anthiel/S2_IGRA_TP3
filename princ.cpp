@@ -63,15 +63,29 @@ void Princ::onSliderAngle(int value)
     update();
 }
 
+void Princ::Startmotor(){
+    qDebug() << "  Start motor ";
+    glarea->m_timer->start();
+}
+
+void Princ::Stopmotor(){
+    qDebug() << "  Stop motor ";
+    glarea->m_timer->stop();
+}
+
 void Princ::on_pushButton_clicked()
 {
     Dialog dia;
+
     connect(&dia, SIGNAL(SliderRadiusChanged(int)),this, SLOT(onSliderRadius(int)));
     connect(&dia, SIGNAL(SliderNearChanged(int)),this, SLOT(onSliderNear(int)));
     connect(&dia, SIGNAL(SliderFarChanged(int)),this, SLOT(onSliderFar(int)));
     connect(&dia, SIGNAL(SliderZChanged(int)),this, SLOT(onSliderZ(int)));
     connect(&dia, SIGNAL(SliderAngleChanged(int)),this, SLOT(onSliderAngle(int)));
-    dia.setInfo(glarea->getRadius(), glarea->getNear(), glarea->getFar(), glarea->get_mz(), glarea->get_mAngle());
+    connect(&dia, SIGNAL(StartSignal()),this, SLOT(Startmotor()));
+    connect(&dia, SIGNAL(StopSignal()),this, SLOT(Stopmotor()));
+
+    dia.setInfo(glarea, glarea->getRadius(), glarea->getNear(), glarea->getFar(), glarea->get_mz(), glarea->get_mAngle());
 
     if(dia.exec()){
     }
